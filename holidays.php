@@ -88,9 +88,20 @@ function pix_add_tourist_role() {
 			'upload_files'  => true,
 		)
 	);
+
+	// on activation, trigger our function that registers the custom post type
+	pix_register_holidays();
+
+	// clear the permalinks after the post type has been registered
+	flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'pix_add_tourist_role' );
 
+// as this plugin is primarily a demo, we remove the added role with ununistall
+function pix_remove_tourist_role() {
+	remove_role( 'tourist' );
+}
+register_uninstall_hook( __FILE__, 'pix_remove_tourist_role' );
 
 add_action( 'admin_init', 'pix_add_role_caps', 999 );
 function pix_add_role_caps() {
