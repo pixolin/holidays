@@ -71,9 +71,11 @@ function pix_register_holidays() {
 
 	register_post_type( 'holidays', $args );
 }
-
 add_action( 'init', 'pix_register_holidays' );
 
+/**
+ * Adds user role "tourist" upon plugin activation
+ */
 function pix_add_tourist_role() {
 	add_role(
 		'tourist',
@@ -101,7 +103,7 @@ function pix_add_role_caps() {
 
 		$usrrole = get_role( $the_role );
 
-		// $usrrole->add_cap( 'read' );
+		$usrrole->add_cap( 'read' );
 		$usrrole->add_cap( 'read_holidays' );
 		$usrrole->add_cap( 'read_private_holidays' );
 		$usrrole->add_cap( 'edit_holidays' );
@@ -110,6 +112,16 @@ function pix_add_role_caps() {
 		$usrrole->add_cap( 'delete_private_holidays' );
 
 	}
+
+	$roles = array( 'editor', 'administrator' );
+
+	foreach ( $roles as $the_role ) {
+		$usrrole = get_role( $the_role );
+
+		$usrrole->add_cap( 'edit_others_holidays' );
+		$usrrole->add_cap( 'delete_others_holidays' );
+	}
+
 	// Don't let tourists edit other tourist's posts
 	$role = get_role( 'tourist' );
 	$role->remove_cap( 'edit_others_posts' );
