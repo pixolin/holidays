@@ -113,29 +113,32 @@ function pix_add_role_caps() {
 	foreach ( $roles as $the_role ) {
 
 		$usrrole = get_role( $the_role );
+		if ( ! empty( $usrrole ) ) {
+			$usrrole->add_cap( 'read' );
+			$usrrole->add_cap( 'read_holidays' );
+			$usrrole->add_cap( 'read_private_holidays' );
+			$usrrole->add_cap( 'edit_holidays' );
 
-		$usrrole->add_cap( 'read' );
-		$usrrole->add_cap( 'read_holidays' );
-		$usrrole->add_cap( 'read_private_holidays' );
-		$usrrole->add_cap( 'edit_holidays' );
-
-		$usrrole->add_cap( 'publish_holidays' );
-		$usrrole->add_cap( 'delete_private_holidays' );
-
+			$usrrole->add_cap( 'publish_holidays' );
+			$usrrole->add_cap( 'delete_private_holidays' );
+		}
 	}
 
 	$roles = array( 'editor', 'administrator' );
 
 	foreach ( $roles as $the_role ) {
 		$usrrole = get_role( $the_role );
-
-		$usrrole->add_cap( 'edit_others_holidays' );
-		$usrrole->add_cap( 'delete_others_holidays' );
+		if ( ! empty( $usrrole ) ) {
+			$usrrole->add_cap( 'edit_others_holidays' );
+			$usrrole->add_cap( 'delete_others_holidays' );
+		}
 	}
 
 	// Don't let tourists edit other tourist's posts
-	$role = get_role( 'tourist' );
-	$role->remove_cap( 'edit_others_posts' );
+	$usrrole = get_role( 'tourist' );
+	if ( ! empty( $usrrole ) ) {
+		$usrrole->remove_cap( 'edit_others_posts' );
+	}
 
 }
 
