@@ -142,10 +142,10 @@ function pix_add_role_caps() {
 
 }
 
-function posts_for_current_author( $query ) {
+function pix_posts_for_current_author( $query ) {
 	global $pagenow;
 
-	if ( 'edit.php' != $pagenow || ! $query->is_admin ) {
+	if ( 'edit.php' !== $pagenow || ! $query->is_admin ) {
 		return $query;
 	}
 
@@ -155,4 +155,4 @@ function posts_for_current_author( $query ) {
 	}
 	return $query;
 }
-add_filter( 'pre_get_posts', 'posts_for_current_author' );
+add_filter( 'pre_get_posts', 'pix_posts_for_current_author' );
